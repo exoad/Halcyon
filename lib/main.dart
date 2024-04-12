@@ -2,23 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:halcyon/debug.dart';
+import 'package:halcyon/global.dart';
 import 'package:halcyon/snd/audio_engine.dart';
-import 'package:halcyon/ui/h_parity_button.dart';
+import 'package:halcyon/ui/h_play_parity_gesture.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
-
-final class Halcyon {
-  late HalcyonAudioEngine audioEngine;
-
-  Halcyon._();
-
-  Future<void> ensureInitialized() async {
-    audioEngine = HalcyonAudioEngine();
-  }
-
-  static final Halcyon instance = Halcyon._();
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -93,22 +83,10 @@ class MainApp extends StatelessWidget {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      H_ToggleIconButton(
-                          onPressed: (bool res) {
-                            if (res) {
-                              Halcyon.instance.audioEngine.play();
-                            } else {
-                              Halcyon.instance.audioEngine.pause();
-                            }
-                          },
-                          primaryIcon:
-                              const Icon(Icons.play_arrow_rounded),
-                          secondaryIcon:
-                              const Icon(Icons.pause_rounded)),
+                      const H_PlayStreamButton(),
                       const SizedBox(width: 22),
-                      H_ParityIconButton(
-                        onHit: () {},
-                        parity: (bool _) async {
+                      IconButton(
+                        onPressed: () async {
                           H_MusicFileProvider provider =
                               Provider.of<H_MusicFileProvider>(
                                   context,
@@ -130,17 +108,21 @@ class MainApp extends StatelessWidget {
                             provider.file = e;
                             Halcyon.instance.audioEngine
                                 .loadFromFile(provider.file!.path);
-                            return true;
-                          } else {
-                            return false;
                           }
                         },
-                        primaryIcon:
-                            const Icon(Icons.file_upload_rounded),
-                        secondaryIcon:
-                            const Icon(Icons.check_rounded),
+                        icon: const Icon(Icons.file_upload_rounded),
                       )
                     ]),
+                const SizedBox(height: 32),
+                Text.rich(TextSpan(children: <InlineSpan>[
+                  for (AudioSource src
+                      in Halcyon.instance.audioEngine.queue)
+                    TextSpan(
+                        text: "${src.soundHash.hash}\n",
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold))
+                ])),
               ],
             ),
           ),

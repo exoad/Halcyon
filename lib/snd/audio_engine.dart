@@ -6,9 +6,10 @@ import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:halcyon/debug.dart';
 import 'package:halcyon/snd/audio_characteristic.dart';
 import 'package:halcyon/snd/error_codes.dart';
+import 'package:halcyon/snd/soloud_extern.dart';
 import 'package:halcyon/ux/h_option.dart';
 
-enum HalcyonEngineState {
+enum HalcyonAudioEngineState {
   stopped,
   loaded,
   playing,
@@ -45,14 +46,14 @@ class ElapsedTimeMutator with ChangeNotifier {
 class HalcyonAudioEngine with ChangeNotifier {
   /// u shld not have to use this directly and shld only do so for minute and low-level operations
   final SoLoud instance;
-  late HalcyonEngineState _state;
-  late StreamController<HalcyonEngineState> _stateStream;
+  late HalcyonAudioEngineState _state;
+  late StreamController<HalcyonAudioEngineState> _stateStream;
   late StreamController<
       Map<HalcyonAudioCharacteristicType,
           HalcyonAudioCharacteristic>> _characteristicStream;
   late Map<HalcyonAudioCharacteristicType, HalcyonAudioCharacteristic>
       _characteristics;
-  final Queue<AudioSource> _queue;
+  final Queue<HalcyonAudioSource> _queue;
   SoundHandle? _curr;
   bool verboseLogging;
 
@@ -62,7 +63,7 @@ class HalcyonAudioEngine with ChangeNotifier {
     }
   }
 
-  void _emitState(HalcyonEngineState state) {
+  void _emitState(HalcyonAudioEngineState state) {
     _state = state;
     _stateStream.add(state);
   }
@@ -96,7 +97,7 @@ class HalcyonAudioEngine with ChangeNotifier {
     _characteristicStream.add(_characteristics);
   }
 
-  HalcyonEngineState get state => _state;
+  HalcyonAudioEngineState get state => _state;
 
   HalcyonAudioEngine(
       {this.verboseLogging = true,
@@ -104,10 +105,11 @@ class HalcyonAudioEngine with ChangeNotifier {
       VolumeCharacteristic? volume,
       PanCharacteristic? pan})
       : instance = SoLoud.instance,
-        _queue = Queue<AudioSource>(),
+        _queue = Queue<HalcyonAudioSource>(),
         _curr = null {
     _stateStream =
-        StreamController<HalcyonEngineState>.broadcast(onListen: () {
+        StreamController<HalcyonAudioEngineState>.broadcast(
+            onListen: () {
       if (verboseLogging) {
         _emit("listener subscribed to state stream");
       }
@@ -132,16 +134,15 @@ class HalcyonAudioEngine with ChangeNotifier {
       if (hasListeners) {
         notifyListeners();
       }
-      _emit("State stream emitted $_");
+      _emit("$_");
     }); // very verbose
     _characteristicStream.stream.listen((_) {
       if (hasListeners) {
         notifyListeners();
       }
-      _emit(
-          "Characteristic stream emitted [${_.length}] characteristics");
+      _emit("[${_.length}] characteristics");
     }); // very verbose
-    _emitState(HalcyonEngineState.uninitialized);
+    _emitState(HalcyonAudioEngineState.uninitialized);
     _emitCharacteristicsMap(<HalcyonAudioCharacteristicType,
         HalcyonAudioCharacteristic>{
       HalcyonAudioCharacteristicType.looping:
@@ -153,6 +154,8 @@ class HalcyonAudioEngine with ChangeNotifier {
     });
   }
 
+  Queue<AudioSource> get queue => Queue<AudioSource>.from(_queue);
+
   int get length => _queue.length;
 
   bool get isEmpty => _queue.isEmpty;
@@ -160,7 +163,7 @@ class HalcyonAudioEngine with ChangeNotifier {
   bool get isNotEmpty => _queue.isNotEmpty;
 
   void subscribeToStates(
-          void Function(HalcyonEngineState state) listener) =>
+          void Function(HalcyonAudioEngineState state) listener) =>
       _stateStream.stream.listen(listener);
 
   void subscribeToCharacteristics(
@@ -178,7 +181,7 @@ class HalcyonAudioEngine with ChangeNotifier {
       if (verboseLogging) {
         _emit("Halcyon inits the SOLOUD audio engine");
       }
-      _emitState(HalcyonEngineState.initialized);
+      _emitState(HalcyonAudioEngineState.initialized);
     }
   }
 
@@ -195,8 +198,8 @@ class HalcyonAudioEngine with ChangeNotifier {
         title: "Failed to load file",
       );
     }
-    _queue.add(src);
-    _emitState(HalcyonEngineState.loaded);
+    _queue.add(HalcyonAudioSource(src, path));
+    _emitState(HalcyonAudioEngineState.loaded);
     return OptionReason.good;
   }
 
@@ -211,8 +214,12 @@ class HalcyonAudioEngine with ChangeNotifier {
         title: "No audio sources",
       );
     }
-    AudioSource src = _queue.first;
-    _curr = await instance.play(src,
+    HalcyonAudioSource src = _queue.first;
+    src.source.allInstancesFinished.first.then((_) {
+      _emit("done playing [${src.source.soundHash.hash}]");
+      _emitState(HalcyonAudioEngineState.stopped);
+    });
+    _curr = await instance.play(src.source,
         volume:
             (_characteristics[HalcyonAudioCharacteristicType.volume]
                     as VolumeCharacteristic)
@@ -224,11 +231,7 @@ class HalcyonAudioEngine with ChangeNotifier {
         pan: (_characteristics[HalcyonAudioCharacteristicType.pan]
                 as PanCharacteristic)
             .pan);
-    src.allInstancesFinished.listen((_) {
-      _emit("audio source finished playing");
-      _emitState(HalcyonEngineState.stopped);
-    });
-    _emitState(HalcyonEngineState.playing);
+    _emitState(HalcyonAudioEngineState.playing);
     return OptionReason.good;
   }
 
@@ -243,7 +246,7 @@ class HalcyonAudioEngine with ChangeNotifier {
     }
     instance.pauseSwitch(
         _curr!); // yo why cant we just remove the "!" here?
-    _emitState(HalcyonEngineState.paused);
+    _emitState(HalcyonAudioEngineState.paused);
     return OptionReason.good;
   }
 
@@ -257,13 +260,13 @@ class HalcyonAudioEngine with ChangeNotifier {
       );
     }
     await instance.stop(_curr!);
-    _emitState(HalcyonEngineState.stopped);
+    _emitState(HalcyonAudioEngineState.stopped);
     return OptionReason.good;
   }
 
   Future<void> disposeCurrent() async {
     _emit("attempt fx_dispose_current()");
-    await instance.disposeSource(_queue.removeFirst());
-    _emitState(HalcyonEngineState.dispose);
+    await instance.disposeSource(_queue.removeFirst().source);
+    _emitState(HalcyonAudioEngineState.dispose);
   }
 }

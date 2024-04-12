@@ -67,7 +67,7 @@ class H_ToggleIconButton extends StatefulWidget {
   final Widget primaryIcon;
   final Widget secondaryIcon;
   final ButtonStyle? style;
-  
+
   const H_ToggleIconButton(
       {super.key,
       this.style,

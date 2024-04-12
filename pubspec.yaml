@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_soloud: ^2.0.0
+  flutter_taggy: ^0.1.2+3
   mason_logger: ^0.2.12
   provider: ^6.1.2
   window_manager: ^0.3.8
