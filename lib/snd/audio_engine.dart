@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
@@ -20,6 +21,18 @@ enum HalcyonAudioEngineState {
   dispose,
   initialized,
   uninitialized;
+}
+
+class H_MusicFileProvider extends ChangeNotifier {
+  File? _file;
+
+  File? get file => _file;
+
+  set file(File? value) {
+    _file = value;
+    Debugger.LOG.info("File set to ${_file?.path}");
+    notifyListeners();
+  }
 }
 
 class ElapsedTimeMutator with ChangeNotifier {
