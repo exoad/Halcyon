@@ -10,14 +10,18 @@ void main() async {
   await Halcyon.instance.ensureInitialized();
   windowManager.waitUntilReadyToShow(
       const WindowOptions(
-        size: Size(800, 600),
+        size: Size(560, 760),
+        minimumSize: Size(560, 760),
         title: "Halcyon",
+        alwaysOnTop: true,
         titleBarStyle: TitleBarStyle.normal,
-      ),
-      () async => await windowManager.show());
-  Halcyon.instance.audioEngine.instance
-      .init(automaticCleanup: true)
-      .then((_) {
+      ), () async {
+    await windowManager.setAlignment(Alignment.center, animate: true);
+    await windowManager.show();
+    await Future<void>.delayed(const Duration(milliseconds: 500),
+        () => windowManager.setAlwaysOnTop(false));
+  });
+  Halcyon.instance.audioEngine.init().then((_) {
     Debugger.LOG
         .info("SoLoud initialized ; also using automatic cleanup");
     runApp(const HalcyonAppEntry());

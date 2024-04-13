@@ -1,14 +1,9 @@
-import 'dart:collection';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:halcyon/global.dart';
 import 'package:halcyon/snd/audio_engine.dart';
-import 'package:halcyon/snd/extern_audio_engine.dart';
-import 'package:halcyon/ui/h_play_parity_gesture.dart';
+import 'package:halcyon/ui/layout/h_vertical_app.dart';
 import 'package:provider/provider.dart';
-import 'package:halcyon/util/collection.dart';
 
 class HalcyonAppEntry extends StatelessWidget {
   const HalcyonAppEntry({super.key});
@@ -25,13 +20,11 @@ class HalcyonAppEntry extends StatelessWidget {
       builder: (BuildContext context, Widget? child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch(
-                primarySwatch: Colors.blueGrey),
             iconButtonTheme: IconButtonThemeData(
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all(
                         const RoundedRectangleBorder())))),
-        home: Scaffold(
+        home: const H_VerticalAppLayout()  /*Scaffold(
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -99,7 +92,7 @@ class HalcyonAppEntry extends StatelessWidget {
               ],
             ),
           ),
-        ),
+        ),*/
       ),
     );
   }

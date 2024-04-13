@@ -193,12 +193,22 @@ class HalcyonAudioEngine with ChangeNotifier {
 
   Future<void> init() async {
     _emit("attempt fx_init()");
-    if (!instance.isInitialized) {
-      await instance.init();
-      if (verboseLogging) {
-        _emit("Halcyon inits the SOLOUD audio engine");
+    if (!(await instance.initialized)) {
+      try {
+        await instance.init(automaticCleanup: true);
+        if (verboseLogging) {
+          _emit("Halcyon inits the SOLOUD audio engine");
+        }
+        _emitState(HalcyonAudioEngineState.initialized);
+      } catch (e) {
+        _emit("Failed to init HalcyonAudioEngine because of $e");
+        if (e is SoLoudPlayerAlreadyInitializedException) {
+          _emitState(HalcyonAudioEngineState
+              .initialized); // prob already initialized
+          _emit(
+              "ignore the previous exception, audio engine initialized already...");
+        }
       }
-      _emitState(HalcyonAudioEngineState.initialized);
     }
   }
 
