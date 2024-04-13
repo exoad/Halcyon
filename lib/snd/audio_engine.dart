@@ -6,9 +6,12 @@ import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:halcyon/debug.dart';
 import 'package:halcyon/snd/audio_characteristic.dart';
 import 'package:halcyon/snd/error_codes.dart';
-import 'package:halcyon/snd/soloud_extern.dart';
+import 'package:halcyon/snd/extern_audio_engine.dart';
 import 'package:halcyon/ux/h_option.dart';
 
+/// These are all of the potential states that a Halcyon Audio Engine can be in. Listen for it through the [StateStream]
+///
+/// Also don't confuse them with [CharacteristicsStream] which is for the characteristics of the audio engine
 enum HalcyonAudioEngineState {
   stopped,
   loaded,
@@ -154,7 +157,8 @@ class HalcyonAudioEngine with ChangeNotifier {
     });
   }
 
-  Queue<HalcyonAudioSource> get queue => Queue<HalcyonAudioSource>.from(_queue);
+  Queue<HalcyonAudioSource> get queue =>
+      Queue<HalcyonAudioSource>.from(_queue);
 
   int get length => _queue.length;
 
@@ -188,8 +192,10 @@ class HalcyonAudioEngine with ChangeNotifier {
   Future<OptionReason<dynamic>> loadFromFile(String path) async {
     _emit("attempt fx_load_from_file -> $path");
     AudioSource? src;
+    HalcyonAudioTags tags;
     try {
       src = await instance.loadFile(path, mode: LoadMode.disk);
+      tags = await HalcyonAudioTags.readTags(path);
     } catch (e) {
       return OptionReason<dynamic>(
         description:
@@ -198,7 +204,7 @@ class HalcyonAudioEngine with ChangeNotifier {
         title: "Failed to load file",
       );
     }
-    _queue.add(HalcyonAudioSource(src, path));
+    _queue.add(HalcyonAudioSource(src, path, tags));
     _emitState(HalcyonAudioEngineState.loaded);
     return OptionReason.good;
   }
