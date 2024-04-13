@@ -1,14 +1,16 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:halcyon/debug.dart';
 import 'package:halcyon/global.dart';
 import 'package:halcyon/snd/audio_engine.dart';
+import 'package:halcyon/snd/soloud_extern.dart';
 import 'package:halcyon/ui/h_play_parity_gesture.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:halcyon/util/collection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -114,15 +116,20 @@ class MainApp extends StatelessWidget {
                       )
                     ]),
                 const SizedBox(height: 32),
-                Text.rich(TextSpan(children: <InlineSpan>[
-                  for (AudioSource src
-                      in Halcyon.instance.audioEngine.queue)
-                    TextSpan(
-                        text: "${src.soundHash.hash}\n",
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold))
-                ])),
+                Builder(builder: (BuildContext context) {
+                  Queue<HalcyonAudioSource> sources =
+                      Halcyon.instance.audioEngine.queue;
+                  return Text.rich(TextSpan(children: <InlineSpan>[
+                    for (int i = 0; i < sources.length; i++)
+                      TextSpan(
+                          text: "${sources[i].path}\n",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: i == 0
+                                  ? FontWeight.bold
+                                  : FontWeight.normal))
+                  ]));
+                }),
               ],
             ),
           ),

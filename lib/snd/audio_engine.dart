@@ -154,7 +154,7 @@ class HalcyonAudioEngine with ChangeNotifier {
     });
   }
 
-  Queue<AudioSource> get queue => Queue<AudioSource>.from(_queue);
+  Queue<HalcyonAudioSource> get queue => Queue<HalcyonAudioSource>.from(_queue);
 
   int get length => _queue.length;
 
