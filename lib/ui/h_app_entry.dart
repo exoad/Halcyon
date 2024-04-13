@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:halcyon/global.dart';
 import 'package:halcyon/snd/audio_engine.dart';
@@ -17,14 +16,10 @@ class HalcyonAppEntry extends StatelessWidget {
         ChangeNotifierProvider<HalcyonAudioEngine>.value(
             value: Halcyon.instance.audioEngine)
       ],
-      builder: (BuildContext context, Widget? child) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            iconButtonTheme: IconButtonThemeData(
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                        const RoundedRectangleBorder())))),
-        home: const H_VerticalAppLayout()  /*Scaffold(
+      builder: (BuildContext context, Widget? child) => const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home:
+              H_VerticalAppLayout() /*Scaffold(
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +88,7 @@ class HalcyonAppEntry extends StatelessWidget {
             ),
           ),
         ),*/
-      ),
+          ),
     );
   }
 }

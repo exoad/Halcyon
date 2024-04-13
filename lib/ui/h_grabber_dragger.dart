@@ -4,17 +4,13 @@ final class H_Grabber extends StatelessWidget {
   const H_Grabber({
     super.key,
     required this.onVerticalDragUpdate,
-    required this.isOnDesktopAndWeb,
   });
 
   final ValueChanged<DragUpdateDetails> onVerticalDragUpdate;
-  final bool isOnDesktopAndWeb;
 
   @override
   Widget build(BuildContext context) {
-    if (!isOnDesktopAndWeb) {
-      return const SizedBox.shrink();
-    }
+
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return GestureDetector(
@@ -25,7 +21,7 @@ final class H_Grabber extends StatelessWidget {
         child: Align(
           alignment: Alignment.topCenter,
           child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            margin: const EdgeInsets.symmetric(vertical: 4.0),
             width: 32.0,
             height: 4.0,
             decoration: BoxDecoration(
