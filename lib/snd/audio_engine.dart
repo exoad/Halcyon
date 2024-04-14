@@ -9,6 +9,7 @@ import 'package:halcyon/snd/audio_characteristic.dart';
 import 'package:halcyon/snd/error_codes.dart';
 import 'package:halcyon/snd/extern_audio_engine.dart';
 import 'package:halcyon/ux/h_option.dart';
+import 'package:halcyon/ux/config/halcyon_config.dart';
 
 /// These are all of the potential states that a Halcyon Audio Engine can be in. Listen for it through the [StateStream]
 ///
@@ -195,7 +196,9 @@ class HalcyonAudioEngine with ChangeNotifier {
     _emit("attempt fx_init()");
     if (!(await instance.initialized)) {
       try {
-        await instance.init(automaticCleanup: true);
+        await instance.init(
+            automaticCleanup:
+                HalcyonConfig.instance.abe_EngineUseAutoCleanup);
         if (verboseLogging) {
           _emit("Halcyon inits the SOLOUD audio engine");
         }

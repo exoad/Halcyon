@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:halcyon/debug.dart';
 import 'package:halcyon/global.dart';
+import 'package:halcyon/ux/config/halcyon_config.dart';
+import 'package:halcyon/ux/laf_config/halcyon_laf_config.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:halcyon/ui/h_app_entry.dart';
 
@@ -21,6 +25,9 @@ void main() async {
     await Future<void>.delayed(const Duration(milliseconds: 500),
         () => windowManager.setAlwaysOnTop(false));
   });
+  Debugger.LOG.info("work_dir=${Directory.current.path}");
+  await Future<void>.microtask(HalcyonConfig.loadDebugConfig);
+  await Future<void>.microtask(HalcyonLaFConfig.loadDebugLaFConfig);
   Halcyon.instance.audioEngine.init().then((_) {
     Debugger.LOG
         .info("SoLoud initialized ; also using automatic cleanup");

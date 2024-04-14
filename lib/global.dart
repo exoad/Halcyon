@@ -11,3 +11,9 @@ final class Halcyon {
 
   static final Halcyon instance = Halcyon._();
 }
+
+final class HalcyonManager {
+  HalcyonManager._();
+
+  static const double kBorderRadius = 6;
+}
