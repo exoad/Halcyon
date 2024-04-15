@@ -7,16 +7,53 @@ part 'halcyon_laf_config.g.dart';
 
 @JsonSerializable(checked: true)
 class HalcyonLaFConfig {
-  @JsonKey(defaultValue: 6, name: "laf__borderRadius")
-  double kBorderRadius = 6;
+  @JsonKey(defaultValue: 6)
+  double general_BorderRadius = 6;
 
-  @JsonKey(defaultValue: "#000000", name: "laf__timeSeekThumbColor")
-  String timeSeekThumbColor = "#000000";
+  @JsonKey(defaultValue: "#FFFFFF")
+  String bbloc_MenuActiveColor = "#FFFFFF";
+
+  @JsonKey(defaultValue: "#FFFFFF")
+  String bbloc_MenuInactiveColor = "#FFFFFF";
+
+  @JsonKey(defaultValue: "#000000")
+  String bbloc_MenuChildActiveColor = "#000000";
+
+  @JsonKey(defaultValue: "#000000")
+  String bbloc_MenuChildInactiveColor = "#000000";
+
+  @JsonKey(defaultValue: "#FFFFFF")
+  String bbloc_ItemActiveColor = "#FFFFFF";
+
+  @JsonKey(defaultValue: "#000000")
+  String bbloc_ItemInactiveColor = "#000000";
+
+  @JsonKey(defaultValue: "#000000")
+  String bbloc_ItemChildActiveColor = "#000000";
+
+  @JsonKey(defaultValue: "#FFFFFF")
+  String bbloc_ItemChildInactiveColor = "#FFFFFF";
+
+  @JsonKey(defaultValue: "#000000")
+  String timeSeek_ThumbColor = "#000000";
+
+  @JsonKey(defaultValue: "#000000")
+  String timeSeek_ActiveTrackColor = "#000000";
+
+  @JsonKey(defaultValue: "#b8b8b8")
+  String timeSeek_InactiveTrackColor = "#b8b8b8";
+
+  @JsonKey(defaultValue: "#b8b8b8")
+  String timeSeek_SecondaryActiveColor = "#b8b8b8";
 
   HalcyonLaFConfig();
 
-  factory HalcyonLaFConfig.fromJson(Map<String, dynamic> json) =>
-      _$HalcyonLaFConfigFromJson(json);
+  factory HalcyonLaFConfig.fromJson(Map<dynamic, dynamic> json) {
+    Map<String, dynamic> map = <String, dynamic>{};
+    json.forEach(
+        (dynamic key, dynamic value) => map[key.toString()] = value);
+    return _$HalcyonLaFConfigFromJson(map);
+  }
 
   Map<String, dynamic> toJson() => _$HalcyonLaFConfigToJson(this);
 
@@ -33,12 +70,8 @@ class HalcyonLaFConfig {
       instance = HalcyonLaFConfig();
       return;
     }
-    instance = checkedYamlDecode(yml, (Map<dynamic, dynamic>? r) {
-      Map<String, dynamic> map = <String, dynamic>{};
-      r!.forEach((dynamic key, dynamic value) {
-        map[key.toString()] = value;
-      });
-      return HalcyonLaFConfig.fromJson(map);
-    }, sourceUrl: uri);
+    instance = checkedYamlDecode(yml,
+        (Map<dynamic, dynamic>? r) => HalcyonLaFConfig.fromJson(r!),
+        sourceUrl: uri);
   }
 }

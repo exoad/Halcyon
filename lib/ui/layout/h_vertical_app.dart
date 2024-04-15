@@ -59,17 +59,29 @@ class _H_VerticalAppLayoutState extends State<H_VerticalAppLayout> {
         ),
         H_BBlocContainer(children: <H_BBlocItem>[
           H_BBlocItem(
-              activeColor: Colors.white,
-              inactiveColor: Colors.white,
-              childActiveColor: Colors.black,
-              childInactiveColor: Colors.black,
+              activeColor: HexColor.fromHexString(
+                  HalcyonLaFConfig.instance.bbloc_MenuActiveColor),
+              inactiveColor: HexColor.fromHexString(
+                  HalcyonLaFConfig.instance.bbloc_MenuInactiveColor),
+              childActiveColor: HexColor.fromHexString(
+                  HalcyonLaFConfig
+                      .instance.bbloc_MenuChildActiveColor),
+              childInactiveColor: HexColor.fromHexString(
+                  HalcyonLaFConfig
+                      .instance.bbloc_MenuChildInactiveColor),
               onPressed: () {},
               child: Icons.menu_rounded),
           H_BBlocItem(
-              activeColor: Colors.white,
-              inactiveColor: Colors.black,
-              childActiveColor: Colors.black,
-              childInactiveColor: Colors.white,
+              activeColor: HexColor.fromHexString(
+                  HalcyonLaFConfig.instance.bbloc_ItemActiveColor),
+              inactiveColor: HexColor.fromHexString(
+                  HalcyonLaFConfig.instance.bbloc_ItemInactiveColor),
+              childActiveColor: HexColor.fromHexString(
+                  HalcyonLaFConfig
+                      .instance.bbloc_ItemChildActiveColor),
+              childInactiveColor: HexColor.fromHexString(
+                  HalcyonLaFConfig
+                      .instance.bbloc_ItemChildInactiveColor),
               onPressed: () =>
                   Debugger.LOG.info("DEBUG BUTTON PRESSED"),
               child: Icons.bug_report_rounded)
@@ -144,12 +156,15 @@ class H_VTopLayer extends StatelessWidget {
         ),
         H_TimeseekSlider(
             onChanged: (double e) {},
-            activeColor: Colors.black,
-            inactiveColor: const Color.fromARGB(255, 192, 192, 192),
-            secondaryActiveColor:
-                const Color.fromARGB(255, 76, 76, 76),
+            activeColor: HexColor.fromHexString(
+                HalcyonLaFConfig.instance.timeSeek_ActiveTrackColor),
+            inactiveColor: HexColor.fromHexString(HalcyonLaFConfig
+                .instance.timeSeek_InactiveTrackColor),
+            secondaryActiveColor: HexColor.fromHexString(
+                HalcyonLaFConfig
+                    .instance.timeSeek_SecondaryActiveColor),
             thumbColor: HexColor.fromHexString(
-                HalcyonLaFConfig.instance.timeSeekThumbColor))
+                HalcyonLaFConfig.instance.timeSeek_ThumbColor))
       ],
     );
   }

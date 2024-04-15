@@ -1,1 +1,4 @@
-laf__borderRadius: "#7537f0"
+kBorderRadius: 6
+timeSeek_ThumbColor: "#8030ff"
+timeSeek_ActiveTrackColor: "#8030ff"
+timeSeek_InactiveTrackColor: "#dccef2"
