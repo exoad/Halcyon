@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:halcyon/debug.dart';
 import 'package:halcyon/extern/string.dart';
 import 'package:halcyon/ui/h_timeseek_slider.dart';
+import 'package:halcyon/ui/layout/h_audio_controller_btns.dart';
 import 'package:halcyon/ui/layout/h_bbloc.dart';
 import 'package:halcyon/ui/layout/vert_counselor.dart';
 import 'package:halcyon/ux/laf_config/halcyon_laf_config.dart';
@@ -157,10 +158,16 @@ class H_VTopLayer extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
-                                  Icon(Icons.play_arrow_rounded,
-                                      size: 38),
-                                  Icon(Icons.skip_next_rounded,
-                                      size: 26),
+                                  H_AudioSecondaryControllerButtons(
+                                      icon:
+                                          Icons.skip_previous_rounded,
+                                      onPressed: () {}),
+                                  H_AudioPrimaryControllerButtons(
+                                      icon: Icons.play_arrow_rounded,
+                                      onPressed: () {}),
+                                  H_AudioSecondaryControllerButtons(
+                                      icon: Icons.skip_next_rounded,
+                                      onPressed: () {})
                                 ])
                           ]),
                     )),

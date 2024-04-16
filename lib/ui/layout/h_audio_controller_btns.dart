@@ -2,28 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:halcyon/extern/string.dart';
 import 'package:halcyon/ux/laf_config/halcyon_laf_config.dart';
 
-class H_AudioPrimaryControllerButtons extends StatelessWidget {
+class H_AudioPrimaryControllerButtons extends StatefulWidget {
   final IconData icon;
-  final Color color;
-  final Color pressedColor;
   final void Function() onPressed;
   const H_AudioPrimaryControllerButtons(
-      {super.key,
-      required this.icon,
-      required this.color,
-      required this.pressedColor,
-      required this.onPressed});
+      {super.key, required this.icon, required this.onPressed});
 
+  @override
+  State<H_AudioPrimaryControllerButtons> createState() =>
+      _H_AudioPrimaryControllerButtonsState();
+}
+
+class _H_AudioPrimaryControllerButtonsState
+    extends State<H_AudioPrimaryControllerButtons> {
   @override
   Widget build(BuildContext context) {
     return IconButton.filled(
-        visualDensity: VisualDensity.comfortable,
-        onPressed: onPressed,
-        icon: Icon(icon,
+        onPressed: widget.onPressed,
+        icon: Icon(widget.icon,
             size: HalcyonLaFConfig
                 .instance.playbackController_PrimaryButtonSize
                 .toDouble()),
         style: IconButton.styleFrom(
+          elevation: HalcyonLaFConfig.instance.general_Elevation,
+          hoverColor: HalcyonLaFConfig
+              .instance
+              .playbackController_PrimaryButtonBackgroundColorOnActive
+              .coerceToColorObj,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
                   HalcyonLaFConfig.instance.general_BorderRadius)),
@@ -40,25 +45,36 @@ class H_AudioPrimaryControllerButtons extends StatelessWidget {
   }
 }
 
-class H_AudioSecondaryControllerButtons extends StatelessWidget {
+class H_AudioSecondaryControllerButtons extends StatefulWidget {
   final IconData icon;
   final void Function() onPressed;
   const H_AudioSecondaryControllerButtons(
       {super.key, required this.icon, required this.onPressed});
 
   @override
+  State<H_AudioSecondaryControllerButtons> createState() =>
+      _H_AudioSecondaryControllerButtonsState();
+}
+
+class _H_AudioSecondaryControllerButtonsState
+    extends State<H_AudioSecondaryControllerButtons> {
+  @override
   Widget build(BuildContext context) {
     return IconButton.filled(
-        visualDensity: VisualDensity.comfortable,
-        onPressed: onPressed,
-        icon: Icon(icon,
+        onPressed: widget.onPressed,
+        icon: Icon(widget.icon,
             size: HalcyonLaFConfig
                 .instance.playbackController_SecondaryButtonSize
                 .toDouble()),
         style: IconButton.styleFrom(
+          elevation: HalcyonLaFConfig.instance.general_Elevation,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
                   HalcyonLaFConfig.instance.general_BorderRadius)),
+          hoverColor: HalcyonLaFConfig
+              .instance
+              .playbackController_SecondaryButtonBackgroundColorOnActive
+              .coerceToColorObj,
           backgroundColor: HalcyonLaFConfig
               .instance
               .playbackController_SecondaryButtonBackgroundColor

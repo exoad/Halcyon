@@ -1,6 +1,7 @@
-general_BorderRadius: 6
+general_BorderRadius: 0
 timeSeek_ThumbColor: "#8030ff"
 timeSeek_ActiveTrackColor: "#8030ff"
 timeSeek_InactiveTrackColor: "#dccef2"
 trackDisplay_ArtworkCornerRadius: 8
 trackDisplay_ArtworkFitStrategy: cover
+general_Elevation: 10

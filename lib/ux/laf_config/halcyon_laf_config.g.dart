@@ -14,6 +14,8 @@ HalcyonLaFConfig _$HalcyonLaFConfigFromJson(Map<String, dynamic> json) =>
         final val = HalcyonLaFConfig();
         $checkedConvert('general_BorderRadius',
             (v) => val.general_BorderRadius = (v as num?)?.toDouble() ?? 6);
+        $checkedConvert('general_Elevation',
+            (v) => val.general_Elevation = (v as num?)?.toDouble() ?? 0);
         $checkedConvert('bbloc_MenuActiveColor',
             (v) => val.bbloc_MenuActiveColor = v as String? ?? '#FFFFFF');
         $checkedConvert('bbloc_MenuInactiveColor',
@@ -114,6 +116,7 @@ HalcyonLaFConfig _$HalcyonLaFConfigFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$HalcyonLaFConfigToJson(HalcyonLaFConfig instance) =>
     <String, dynamic>{
       'general_BorderRadius': instance.general_BorderRadius,
+      'general_Elevation': instance.general_Elevation,
       'bbloc_MenuActiveColor': instance.bbloc_MenuActiveColor,
       'bbloc_MenuInactiveColor': instance.bbloc_MenuInactiveColor,
       'bbloc_MenuChildActiveColor': instance.bbloc_MenuChildActiveColor,

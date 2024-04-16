@@ -13,6 +13,9 @@ class HalcyonLaFConfig {
   @JsonKey(defaultValue: 6)
   double general_BorderRadius = 6;
 
+  @JsonKey(defaultValue: 0)
+  double general_Elevation = 0;
+
   @JsonKey(defaultValue: HEX_WHITE)
   String bbloc_MenuActiveColor = HEX_WHITE;
 
@@ -134,9 +137,11 @@ class HalcyonLaFConfig {
     Map<String, dynamic> map = instance.toJson();
     for (String r in map.keys) {
       Debugger.LOG.info(
-          "Debug Loads Property \"$r\"=${instance.toJson()[r]}");
+          "DebugLaF Property ~ ${r.replaceAll("_", "->")}=${instance.toJson()[r]}");
     }
     Debugger.LOG.info("Debug Loads LaF Config [${map.length}]");
     Debugger.printDivider("Debug_Laf");
   }
 }
+
+
