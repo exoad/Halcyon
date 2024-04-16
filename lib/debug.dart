@@ -1,3 +1,4 @@
+import 'package:halcyon/extern/string.dart';
 import 'package:mason_logger/mason_logger.dart';
 
 final class Debugger {
@@ -12,4 +13,6 @@ final class Debugger {
           warn: (String? r) =>
               "${DateTime.now().toIso8601String()} [WARN]:  $r"));
 
+  static void printDivider([String? title, int n = 48]) => LOG.info(
+      "${"═".repeat(n ~/ 2)}•°••°•°• ⚠${title == null ? "": " $title ⚠"}  •°•°••°•${"═".repeat(n ~/ 2)}");
 }

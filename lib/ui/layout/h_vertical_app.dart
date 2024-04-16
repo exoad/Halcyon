@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:halcyon/debug.dart';
+import 'package:halcyon/extern/string.dart';
 import 'package:halcyon/ui/h_timeseek_slider.dart';
 import 'package:halcyon/ui/layout/h_bbloc.dart';
 import 'package:halcyon/ui/layout/vert_counselor.dart';
-import 'package:halcyon/util/color.dart';
 import 'package:halcyon/ux/laf_config/halcyon_laf_config.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
@@ -59,29 +59,25 @@ class _H_VerticalAppLayoutState extends State<H_VerticalAppLayout> {
         ),
         H_BBlocContainer(children: <H_BBlocItem>[
           H_BBlocItem(
-              activeColor: HexColor.fromHexString(
-                  HalcyonLaFConfig.instance.bbloc_MenuActiveColor),
-              inactiveColor: HexColor.fromHexString(
-                  HalcyonLaFConfig.instance.bbloc_MenuInactiveColor),
-              childActiveColor: HexColor.fromHexString(
-                  HalcyonLaFConfig
-                      .instance.bbloc_MenuChildActiveColor),
-              childInactiveColor: HexColor.fromHexString(
-                  HalcyonLaFConfig
-                      .instance.bbloc_MenuChildInactiveColor),
+              activeColor: HalcyonLaFConfig
+                  .instance.bbloc_MenuActiveColor.coerceToColorObj,
+              inactiveColor: HalcyonLaFConfig
+                  .instance.bbloc_MenuInactiveColor.coerceToColorObj,
+              childActiveColor: HalcyonLaFConfig.instance
+                  .bbloc_MenuChildActiveColor.coerceToColorObj,
+              childInactiveColor: HalcyonLaFConfig.instance
+                  .bbloc_MenuChildInactiveColor.coerceToColorObj,
               onPressed: () {},
               child: Icons.menu_rounded),
           H_BBlocItem(
-              activeColor: HexColor.fromHexString(
-                  HalcyonLaFConfig.instance.bbloc_ItemActiveColor),
-              inactiveColor: HexColor.fromHexString(
-                  HalcyonLaFConfig.instance.bbloc_ItemInactiveColor),
-              childActiveColor: HexColor.fromHexString(
-                  HalcyonLaFConfig
-                      .instance.bbloc_ItemChildActiveColor),
-              childInactiveColor: HexColor.fromHexString(
-                  HalcyonLaFConfig
-                      .instance.bbloc_ItemChildInactiveColor),
+              activeColor: HalcyonLaFConfig
+                  .instance.bbloc_ItemActiveColor.coerceToColorObj,
+              inactiveColor: HalcyonLaFConfig
+                  .instance.bbloc_ItemInactiveColor.coerceToColorObj,
+              childActiveColor: HalcyonLaFConfig.instance
+                  .bbloc_ItemChildActiveColor.coerceToColorObj,
+              childInactiveColor: HalcyonLaFConfig.instance
+                  .bbloc_ItemChildInactiveColor.coerceToColorObj,
               onPressed: () =>
                   Debugger.LOG.info("DEBUG BUTTON PRESSED"),
               child: Icons.bug_report_rounded)
@@ -109,15 +105,23 @@ class H_VTopLayer extends StatelessWidget {
                     flex: 1,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Image.network(
-                          "https://picsum.photos/600",
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            HalcyonLaFConfig.instance
+                                .trackDisplay_ArtworkCornerRadius),
+                        child: Image.network(
+                            fit: HalcyonLaFConfig.instance
+                                .trackDisplay_ArtworkFitStrategy.fit,
+                            "https://picsum.photos/600",
+                            width: MediaQuery.of(context).size.width,
+                            height:
+                                MediaQuery.of(context).size.height),
+                      ),
                     )),
-                const Flexible(
+                Flexible(
                     flex: 1,
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                           crossAxisAlignment:
                               CrossAxisAlignment.center,
@@ -130,21 +134,29 @@ class H_VTopLayer extends StatelessWidget {
                                 children: <Widget>[
                                   Text("Song Name",
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight:
-                                              FontWeight.bold)),
+                                          fontSize: HalcyonLaFConfig
+                                              .instance
+                                              .trackDisplay_TrackNameFontSize,
+                                          fontWeight: FontWeight
+                                              .values[HalcyonLaFConfig
+                                                  .instance
+                                                  .trackDisplay_TrackNameFontWeight ~/
+                                              100])),
                                   Text("Artist Name",
                                       style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight:
-                                              FontWeight.normal)),
+                                          fontSize: HalcyonLaFConfig
+                                              .instance
+                                              .trackDisplay_TrackSecondaryInfoFontSize,
+                                          fontWeight: FontWeight
+                                              .values[HalcyonLaFConfig
+                                                  .instance
+                                                  .trackDisplay_TrackSecondaryInfoFontWeight ~/
+                                              100])),
                                 ]),
                             Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
-                                  Icon(Icons.skip_previous_rounded,
-                                      size: 26),
                                   Icon(Icons.play_arrow_rounded,
                                       size: 38),
                                   Icon(Icons.skip_next_rounded,
@@ -156,15 +168,14 @@ class H_VTopLayer extends StatelessWidget {
         ),
         H_TimeseekSlider(
             onChanged: (double e) {},
-            activeColor: HexColor.fromHexString(
-                HalcyonLaFConfig.instance.timeSeek_ActiveTrackColor),
-            inactiveColor: HexColor.fromHexString(HalcyonLaFConfig
-                .instance.timeSeek_InactiveTrackColor),
-            secondaryActiveColor: HexColor.fromHexString(
-                HalcyonLaFConfig
-                    .instance.timeSeek_SecondaryActiveColor),
-            thumbColor: HexColor.fromHexString(
-                HalcyonLaFConfig.instance.timeSeek_ThumbColor))
+            activeColor: HalcyonLaFConfig
+                .instance.timeSeek_ActiveTrackColor.coerceToColorObj,
+            inactiveColor: HalcyonLaFConfig.instance
+                .timeSeek_InactiveTrackColor.coerceToColorObj,
+            secondaryActiveColor: HalcyonLaFConfig.instance
+                .timeSeek_SecondaryActiveColor.coerceToColorObj,
+            thumbColor: HalcyonLaFConfig
+                .instance.timeSeek_ThumbColor.coerceToColorObj)
       ],
     );
   }

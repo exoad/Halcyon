@@ -17,3 +17,9 @@ final class HalcyonManager {
 
   static const double kBorderRadius = 6;
 }
+
+// macros and shi i dont wanna type out (they are const so they are inlined)
+
+const String HEX_BLACK = "#000000";
+const String HEX_WHITE = "#FFFFFF";
+const String HEX_TRANSPARENT = "#00FFFFFF";
