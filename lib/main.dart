@@ -29,8 +29,7 @@ void main() async {
   await Future<void>.microtask(HalcyonConfig.loadDebugConfig);
   await Future<void>.microtask(HalcyonLaFConfig.loadDebugLaFConfig);
   Halcyon.instance.audioEngine.init().then((_) {
-    Debugger.LOG
-        .info("SoLoud initialized ; also using automatic cleanup");
+    Debugger.LOG.info("SoLoud backend initialized!");
     runApp(const HalcyonAppEntry());
   });
 }

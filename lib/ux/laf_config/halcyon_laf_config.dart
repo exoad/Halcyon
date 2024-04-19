@@ -77,13 +77,13 @@ class HalcyonLaFConfig {
   @JsonKey(defaultValue: 40)
   int playbackController_PrimaryButtonSize = 40;
 
-  @JsonKey(defaultValue: HEX_BLACK)
-  String playbackController_SecondaryButtonBackgroundColor =
-      HEX_BLACK;
-
   @JsonKey(defaultValue: HEX_WHITE)
-  String playbackController_SecondaryButtonForegroundColor =
+  String playbackController_SecondaryButtonBackgroundColor =
       HEX_WHITE;
+
+  @JsonKey(defaultValue: HEX_BLACK)
+  String playbackController_SecondaryButtonForegroundColor =
+      HEX_BLACK;
 
   @JsonKey(defaultValue: HEX_WHITE)
   String playbackController_SecondaryButtonBackgroundColorOnActive =

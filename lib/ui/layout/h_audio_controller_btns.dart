@@ -25,13 +25,6 @@ class _H_AudioPrimaryControllerButtonsState
                 .toDouble()),
         style: IconButton.styleFrom(
           elevation: HalcyonLaFConfig.instance.general_Elevation,
-          hoverColor: HalcyonLaFConfig
-              .instance
-              .playbackController_PrimaryButtonBackgroundColorOnActive
-              .coerceToColorObj,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  HalcyonLaFConfig.instance.general_BorderRadius)),
           backgroundColor: HalcyonLaFConfig
               .instance
               .playbackController_PrimaryButtonBackgroundColor
@@ -40,6 +33,7 @@ class _H_AudioPrimaryControllerButtonsState
               .instance
               .playbackController_PrimaryButtonForegroundColor
               .coerceToColorObj,
+          splashFactory: NoSplash.splashFactory,
           padding: const EdgeInsets.all(8.0),
         ));
   }
@@ -68,13 +62,6 @@ class _H_AudioSecondaryControllerButtonsState
                 .toDouble()),
         style: IconButton.styleFrom(
           elevation: HalcyonLaFConfig.instance.general_Elevation,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  HalcyonLaFConfig.instance.general_BorderRadius)),
-          hoverColor: HalcyonLaFConfig
-              .instance
-              .playbackController_SecondaryButtonBackgroundColorOnActive
-              .coerceToColorObj,
           backgroundColor: HalcyonLaFConfig
               .instance
               .playbackController_SecondaryButtonBackgroundColor
@@ -83,6 +70,7 @@ class _H_AudioSecondaryControllerButtonsState
               .instance
               .playbackController_SecondaryButtonForegroundColor
               .coerceToColorObj,
+          splashFactory: NoSplash.splashFactory,
           padding: const EdgeInsets.all(8.0),
         ));
   }
