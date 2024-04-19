@@ -215,7 +215,7 @@ class HalcyonAudioEngine with ChangeNotifier {
     }
   }
 
-  Future<OptionReason<dynamic>> loadFromFile(String path) async {
+  Future<OptionReason> loadFromFile(String path) async {
     _emit("attempt fx_load_from_file -> $path");
     AudioSource? src;
     HalcyonAudioTags tags;
@@ -223,10 +223,10 @@ class HalcyonAudioEngine with ChangeNotifier {
       src = await instance.loadFile(path, mode: LoadMode.disk);
       tags = await HalcyonAudioTags.readTags(path);
     } catch (e) {
-      return OptionReason<dynamic>(
-        description:
-            "[${HalcyonAudioEngineErrorCodes.FAILED_TO_LOAD_DUE_TO_EXCEPTION}] Failed to load file from $path because of $e.",
-        payload: e,
+      return OptionReason(
+        description: "Failed to load file from $path because of $e.",
+        payload: HalcyonAudioEngineErrorCodes
+            .FAILED_TO_LOAD_DUE_TO_EXCEPTION,
         title: "Failed to load file",
       );
     }
@@ -237,14 +237,13 @@ class HalcyonAudioEngine with ChangeNotifier {
 
   bool get isInitialized => instance.isInitialized;
 
-  Future<OptionReason<int>> play() async {
+  Future<OptionReason> play() async {
     _emit("attempt fx_play()");
     if (isEmpty) {
-      return const OptionReason<int>(
-        description:
-            "[${HalcyonAudioEngineErrorCodes.QUEUE_IS_EMPTY}] No audio sources to play",
-        title: "No audio sources",
-      );
+      return const OptionReason(
+          description: "No audio sources to play",
+          title: "No audio sources",
+          payload: HalcyonAudioEngineErrorCodes.QUEUE_IS_EMPTY);
     }
     HalcyonAudioSource src = _queue.first;
     src.source.allInstancesFinished.first.then((_) {
@@ -267,14 +266,13 @@ class HalcyonAudioEngine with ChangeNotifier {
     return OptionReason.good;
   }
 
-  OptionReason<int> pause() {
+  OptionReason pause() {
     _emit("attempt fx_pause()");
     if (_curr == null) {
-      return const OptionReason<int>(
-        description:
-            "[${HalcyonAudioEngineErrorCodes.QUEUE_IS_EMPTY}] No audio sources to pause",
-        title: "No audio sources",
-      );
+      return const OptionReason(
+          description: "No audio sources to pause",
+          title: "No audio sources",
+          payload: HalcyonAudioEngineErrorCodes.QUEUE_IS_EMPTY);
     }
     instance.pauseSwitch(
         _curr!); // yo why cant we just remove the "!" here?
@@ -282,13 +280,13 @@ class HalcyonAudioEngine with ChangeNotifier {
     return OptionReason.good;
   }
 
-  Future<OptionReason<int>> stop() async {
+  Future<OptionReason> stop() async {
     _emit("attempt fx_stop()");
     if (_curr == null) {
-      return const OptionReason<int>(
-        description:
-            "[${HalcyonAudioEngineErrorCodes.QUEUE_IS_EMPTY}] No audio sources to stop",
+      return const OptionReason(
+        description: "No audio sources to stop",
         title: "No audio sources",
+        payload: HalcyonAudioEngineErrorCodes.QUEUE_IS_EMPTY,
       );
     }
     await instance.stop(_curr!);

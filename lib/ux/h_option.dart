@@ -26,8 +26,8 @@ final class Option<A, B> {
   }
 }
 
-class OptionReason<T> {
-  static const OptionReason<int> good = OptionReason<int>(
+class OptionReason {
+  static const OptionReason good = OptionReason(
     description: "N/A",
     title: "N/A",
     payload: HalcyonAudioEngineErrorCodes.OK,
@@ -35,10 +35,14 @@ class OptionReason<T> {
 
   final String description;
   final String title;
-  final T? payload;
+  final int payload;
 
   const OptionReason(
-      {required this.description, required this.title, this.payload});
+      {required this.description,
+      required this.title,
+      required this.payload});
+
+  bool get isGood => payload == HalcyonAudioEngineErrorCodes.OK;
 
   @override
   String toString() {
